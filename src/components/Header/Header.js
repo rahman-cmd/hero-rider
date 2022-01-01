@@ -42,7 +42,7 @@ const Header = () => {
                         cursor: 'pointer',
                      }}
                   >
-                     SHOMIN ARENA
+                     PROGRAMING HERO RIDER
                   </Typography>
                </Link>
 
@@ -62,7 +62,7 @@ const Header = () => {
                         component={Link}
                         to='/profile'
                         variant='standard'
-                        sx={{ mr: 2,  color: '#1976d2', fontWeight: 'bold'}}
+                        sx={{ mr: 2, color: '#1976d2', fontWeight: 'bold' }}
                      >
                         My Profile
                      </Button>
@@ -73,9 +73,9 @@ const Header = () => {
                         color='error'
                         onClick={logoutUser}
                         startIcon={<LogoutIcon color='error' />}
-                        
+
                      >
-                        
+
                      </Button>
                   ) : (
                      <Button component={Link} to='/login' variant='contained'>

@@ -281,7 +281,7 @@ const RiderSignUp = () => {
                      <Grid item md={4}>
                         <Typography variant='body1'>Car Info</Typography>
                         <Typography variant='body2' color='gray'>
-                           Car Information is also important to verify cars
+                           Car Information is also importants to verify cars
                            validity.
                         </Typography>
                      </Grid>

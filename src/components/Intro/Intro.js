@@ -2,7 +2,7 @@ import { Button, Container, Grid, styled, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
-import inTroSvg from '../../media/cityDriver.svg';
+import car from '../../Images/car.gif';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -29,11 +29,9 @@ const Intro = () => {
                   <Grid item md={6}>
                      <Box>
                         <Typography variant='h3' gutterBottom fontWeight={600}>
-                           World Woide <br /> Ride Sharing Platform
+                           Best <br /> Ride with Hero Rider
                         </Typography>
-                        <Typography variant='h5' color='gray'>
-                           All solution in one app
-                        </Typography>
+
                         {!user && (
                            <ButtonBox>
                               <Button
@@ -60,7 +58,7 @@ const Intro = () => {
                         {
                            user && <Box>
                               <Typography variant='h2' color='primary'>Welcome {user.displayName}</Typography>
-                              <Typography variant='h5' color='gray'>Go to your profile to see the packages and profile information</Typography>
+                              <Typography variant='h5' color='black'>We are provide ride and driveing larning, So you are becom a larner your first choos our service and platfrom</Typography>
                            </Box>
                         }
                      </Box>
@@ -68,7 +66,7 @@ const Intro = () => {
                   <Grid item md={6}>
                      <Box>
                         <img
-                           src={inTroSvg}
+                           src={car}
                            alt='intro svg'
                            style={{ maxWidth: '100%' }}
                         />

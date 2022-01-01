@@ -25,7 +25,6 @@ const Nav = styled('nav')(({ theme }) => ({
 
 const Header = () => {
    const { user, logoutUser, admin } = useAuth();
-   console.log(admin);
 
    return (
       <HeaderWrapper>

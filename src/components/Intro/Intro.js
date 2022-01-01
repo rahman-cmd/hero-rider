@@ -29,7 +29,7 @@ const Intro = () => {
                   <Grid item md={6}>
                      <Box>
                         <Typography variant='h3' gutterBottom fontWeight={600}>
-                           Country's Number 1 <br /> Ride Sharing Platform
+                           World Woide <br /> Ride Sharing Platform
                         </Typography>
                         <Typography variant='h5' color='gray'>
                            All solution in one app

@@ -6,7 +6,7 @@ if (localStorage.getItem('idToken')) {
    headers.authorization = `Bearer ${localStorage.getItem('idToken')}`;
 }
 
-const baseURL = 'https://hero-rider-server.herokuapp.com'
+const baseURL = 'https://hero-rider77.herokuapp.com/'
 
 
 export const axiosInstance = axios.create({

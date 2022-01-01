@@ -1,14 +1,14 @@
 import { initializeApp } from 'firebase/app';
 
-// Your web app's Firebase configuration
+// Firebase configuration
 const firebaseConfig = {
-   apiKey: "AIzaSyC7XKcOD_a9Glvd5gDacLVCdIlQiOLakMk",
-   authDomain: "hero-rider-app.firebaseapp.com",
-   projectId: "hero-rider-app",
-   storageBucket: "hero-rider-app.appspot.com",
-   messagingSenderId: "7184478752",
-   appId: "1:7184478752:web:1f51f388c7112ae7c04245"
- };
+  apiKey: "AIzaSyDQ7OHRLPuRGpkUPy9rzaoqbGGpP6nHQUk",
+  authDomain: "hero-rider-f09e5.firebaseapp.com",
+  projectId: "hero-rider-f09e5",
+  storageBucket: "hero-rider-f09e5.appspot.com",
+  messagingSenderId: "53920347416",
+  appId: "1:53920347416:web:c8ff60e07f2d99afc89a6d"
+};
 
 // Initialize Firebase
 const initializeFirebase = () => initializeApp(firebaseConfig);

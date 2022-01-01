@@ -4,6 +4,7 @@ import { Box } from '@mui/system';
 import { Button, Container, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const HeaderWrapper = styled('header')(({ theme }) => ({
    background: '#f7f7f7',
@@ -23,7 +24,8 @@ const Nav = styled('nav')(({ theme }) => ({
 }));
 
 const Header = () => {
-   const { user, logoutUser } = useAuth();
+   const { user, logoutUser, admin } = useAuth();
+   console.log(admin);
 
    return (
       <HeaderWrapper>
@@ -40,28 +42,40 @@ const Header = () => {
                         cursor: 'pointer',
                      }}
                   >
-                     Hero Rider
+                     SHOMIN ARENA
                   </Typography>
                </Link>
 
                <Nav>
+                  {user && admin && (
+                     <Button
+                        component={Link}
+                        to='/admin'
+                        variant='standard'
+                        sx={{ mr: 2, color: '#1976d2', fontWeight: 'bold' }}
+                     >
+                        Dashboard
+                     </Button>
+                  )}
                   {user && (
                      <Button
                         component={Link}
                         to='/profile'
-                        variant='contained'
-                        sx={{ mr: 2 }}
+                        variant='standard'
+                        sx={{ mr: 2,  color: '#1976d2', fontWeight: 'bold'}}
                      >
                         My Profile
                      </Button>
                   )}
                   {user ? (
                      <Button
-                        variant='contained'
+                        variant='standard'
                         color='error'
                         onClick={logoutUser}
+                        startIcon={<LogoutIcon color='error' />}
+                        
                      >
-                        Logout
+                        
                      </Button>
                   ) : (
                      <Button component={Link} to='/login' variant='contained'>

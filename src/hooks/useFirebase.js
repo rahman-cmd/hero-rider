@@ -7,10 +7,12 @@ import {
    signOut,
    getIdToken,
    updateProfile,
+   deleteUser,
 } from 'firebase/auth';
 import initializeFirebase from '../firebase/firebase.config';
 import { useAuth } from './useAuth';
 import { axiosInstance } from '../utils/AxiosInstance';
+import { useNavigate } from 'react-router-dom';
 
 // initializing firebase app
 initializeFirebase();
@@ -21,16 +23,15 @@ const useFirebase = () => {
    const [user, setUser] = useState(null);
    const [userLoading, setUserLoading] = useState(true);
    const [authError, setAuthError] = useState('');
+   const [admin, setAdmin] = useState(false);
 
-   const joinWIthEmailAndPassword = async (
-      userData,
-      formData,
-      navigate
-   ) => {
+   const navigate = useNavigate();
+
+   const joinWIthEmailAndPassword = async (userData, formData, navigate) => {
       try {
          setUserLoading(true);
          setAuthError('');
-         
+
          // register user
          const { userEmail, password, userName } = userData;
          const { user } = await createUserWithEmailAndPassword(
@@ -44,7 +45,8 @@ const useFirebase = () => {
             displayName: userName,
          });
 
-         const {data} = await axiosInstance.post('/saveUser', formData);
+         formData.append('uid', user.uid);
+         const { data } = await axiosInstance.post('/saveUser', formData);
 
          console.log(data);
 
@@ -56,7 +58,10 @@ const useFirebase = () => {
       }
    };
 
-   const loginWithEmailAndPassword = async ({ userEmail, password }) => {
+   const loginWithEmailAndPassword = async (
+      { userEmail, password },
+      redirectedFrom
+   ) => {
       try {
          setUserLoading(true);
          setAuthError('');
@@ -67,10 +72,18 @@ const useFirebase = () => {
             password
          );
 
+         redirectedFrom ? navigate(redirectedFrom) : navigate('/profile');
+
          console.log(user);
       } catch (err) {
          console.log(err.message);
-         setAuthError(err.message);
+         if (err.message.includes('auth/user-not-found')) {
+            setAuthError('No user found with this email 😟');
+         } else if (err.message.includes('auth/wrong-password')) {
+            setAuthError('Wrong password 😟');
+         } else {
+            setAuthError(err.message);
+         }
       } finally {
          setUserLoading(false);
       }
@@ -111,6 +124,19 @@ const useFirebase = () => {
       });
    };
 
+
+
+   useEffect(() => {
+      if (user) {
+         setUserLoading(true);
+         axiosInstance.get(`/checkAdmin/${user?.email}`).then(({ data }) => {
+            setAdmin(data?.role ? data.role === 'admin' : false);
+            setUserLoading(false);
+            console.log(data);
+         });
+      }
+   }, [user]);
+
    return {
       joinWIthEmailAndPassword,
       loginWithEmailAndPassword,
@@ -118,6 +144,7 @@ const useFirebase = () => {
       userLoading,
       authError,
       logoutUser,
+      admin,
    };
 };
 

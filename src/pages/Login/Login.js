@@ -1,13 +1,15 @@
 import {
    Button,
+   CircularProgress,
    Container,
    styled,
    TextField,
    Typography,
 } from '@mui/material';
+import { Box } from '@mui/system';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -43,18 +45,24 @@ const Login = () => {
       formState: { errors },
    } = useForm();
 
-   const { loginWithEmailAndPassword } = useAuth();
+   const { loginWithEmailAndPassword, authError, userLoading } = useAuth();
+
+   const location = useLocation()
+
+   console.log(location);
 
    const submitHandler = (formData) => {
-      loginWithEmailAndPassword(formData)
+      loginWithEmailAndPassword(formData, location.state?.from?.pathname);
    };
 
+ 
+   
    console.log({ errors });
 
    return (
        <LoginWrapper>
          <Container maxWidth='lg'>
-             <Typography variant='h4' textAlign='center' color='#fff' gutterBottom>
+             <Typography component={Link} to='/' variant='h4' textAlign='center' color='#fff' gutterBottom sx={{display: 'block'}}>
                  HeroRider
              </Typography>
             <Typography
@@ -64,6 +72,7 @@ const Login = () => {
                Welcome Back!
             </Typography>
             <Form onSubmit={handleSubmit(submitHandler)}>
+               <Typography color='error' sx={{mb: 2}}>{authError ? authError : ''}</Typography>
                <InputField
                   label='E-mail'
                   fullWidth
@@ -105,11 +114,23 @@ const Login = () => {
                   sx={{ mt: 2 }}
                   type='submit'
                >
-                  Login
+                  {userLoading ? (
+                           <CircularProgress color='common' size='1.5rem' />
+                        ) : (
+                           'Sign in'
+                        )}
                </Button>
-               <Button component={Link} to='/learnerSignUp'>
-                  Don't have an account? SignUp
-               </Button>
+
+               <Typography sx={{mt: 1}}>Don't have an account yet? </Typography>
+               <Box>
+               <Typography component={Link} to='/learnerSignUp' variant='body2'>
+                  Join as a Learner
+               </Typography>
+               <Typography variant='body2' component='span' sx={{px: 1}}>OR</Typography>
+               <Typography component={Link} to='/riderSignUp' variant='body2'>
+                  Join as a Rider
+               </Typography>
+               </Box>
             </Form>
          </Container>
       </LoginWrapper>

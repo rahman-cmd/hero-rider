@@ -1,4 +1,4 @@
-import { Button, Container, Grid, TextField, Typography } from '@mui/material';
+import { Button, CircularProgress, Container, Grid, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import Header from '../../components/Header/Header';
@@ -13,7 +13,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
 const Input = styled('input')({
-
+   // display: 'none',
 });
 
 const RiderSignUpWrapper = styled('div')(({ theme }) => ({}));
@@ -43,19 +43,25 @@ const LearnerSignUp = () => {
       formState: { errors },
    } = useForm();
 
-   const { joinWIthEmailAndPassword } = useAuth();
+   const { joinWIthEmailAndPassword, userLoading } = useAuth();
    const navigate = useNavigate();
 
    const submitHandler = (inputData) => {
+      
+      if(inputData.password !== inputData.confirmPassword) {
+         return alert('Passwords do not match with the confirm password');
+         return;
+      }
 
-      const userData = { ...inputData, vehicleType, type: 'learner' };
-
+      const userData = {...inputData, vehicleType, type: 'learner'};
+   
       // creating form data
       const formData = new FormData();
       formData.append('userName', inputData.userName);
       formData.append('userEmail', inputData.userEmail);
       formData.append('userAge', inputData.userAge);
       formData.append('userPhone', inputData.userPhone);
+      formData.append('userAddress', inputData.userAddress);
       formData.append('userProfileImage', inputData.userProfileImage[0]);
       formData.append('userNidImage', inputData.userNidImage[0]);
       formData.append('vehicleType', vehicleType);
@@ -63,7 +69,7 @@ const LearnerSignUp = () => {
       formData.append('type', 'learner');
 
 
-      joinWIthEmailAndPassword(userData, formData, navigate);
+      joinWIthEmailAndPassword(userData ,formData, navigate);
    };
 
    console.log({ errors });
@@ -194,7 +200,7 @@ const LearnerSignUp = () => {
                               aria-label='upload picture'
                               component='span'
                            >
-                              <PhotoCamera />
+                              {/* <PhotoCamera /> */}
                               <Typography>Upload Profile Picture</Typography>
                            </IconButton>
                         </label>
@@ -218,7 +224,7 @@ const LearnerSignUp = () => {
                               aria-label='upload picture'
                               component='span'
                            >
-                              <PhotoCamera />
+                              {/* <PhotoCamera /> */}
                               <Typography>Nid Photo (Front)</Typography>
                            </IconButton>
                         </label>
@@ -309,7 +315,11 @@ const LearnerSignUp = () => {
                   sx={{ marginLeft: 'auto', display: 'block' }}
                   type='submit'
                >
-                  Join
+                  {userLoading ? (
+                           <CircularProgress color='common' size='1.5rem' />
+                        ) : (
+                           'Join'
+                        )}
                </Button>
             </Form>
          </Container>

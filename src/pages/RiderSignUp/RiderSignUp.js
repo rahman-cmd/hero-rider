@@ -1,4 +1,4 @@
-import { Button, Container, Grid, TextField, Typography } from '@mui/material';
+import { Button, CircularProgress, Container, Grid, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import Header from '../../components/Header/Header';
@@ -43,11 +43,18 @@ const RiderSignUp = () => {
       formState: { errors },
    } = useForm({ vehicleType: '' });
 
-   const { joinWIthEmailAndPassword } = useAuth();
+   const { joinWIthEmailAndPassword, userLoading } = useAuth();
    const navigate = useNavigate();
+
+   
 
    const submitHandler = (inputData) => {
       const userData = { ...inputData, vehicleType, type: 'rider' };
+
+      if(inputData.password !== inputData.confirmPassword) {
+         return alert('Passwords do not match with the confirm password');
+         return;
+      }
 
       // creating form data
       const formData = new FormData();
@@ -59,6 +66,7 @@ const RiderSignUp = () => {
       formData.append('carNumber', inputData.carNumber);
       formData.append('numberPalate', inputData.numberPalate);
       formData.append('workingArea', inputData.workingArea);
+      formData.append('userAddress', inputData.userAddress);
       formData.append('userProfileImage', inputData.userProfileImage[0]);
       formData.append('userNidImage', inputData.userNidImage[0]);
       formData.append('userLicenseImage', inputData.userLicenseImage[0]);
@@ -125,6 +133,8 @@ const RiderSignUp = () => {
                                  message: 'Invalid email address',
                               },
                            })}
+                           error={errors.userEmail ? true : false}
+                           helperText={errors.userEmail ? errors.userEmail.message : ''}
                         />
 
                         <InputField
@@ -137,9 +147,13 @@ const RiderSignUp = () => {
                                  message: 'Age is required',
                               },
                            })}
+                           type='number'
+                           error={errors.userAge ? true : false}
+                           helperText={errors.userAge ? errors.userAge.message : ''}
                         />
                         <InputField
                            label='Phone'
+                           type='number'
                            fullWidth
                            size='small'
                            {...register('userPhone', {
@@ -147,9 +161,11 @@ const RiderSignUp = () => {
                                  value: true,
                                  message: 'Phone Number is required',
                               },
-                              minLength: 11,
-                              maxLength: 11,
+                              minLength: {value: 11, message: 'Must be at least 11 digit'},
+                              maxLength: {value:11, message: 'Must be at most 11 digit'},
                            })}
+                           error={errors.userPhone && true}
+                           helperText={errors.userPhone && errors.userPhone.message}
                         />
                      </Grid>
                   </Grid>
@@ -281,7 +297,7 @@ const RiderSignUp = () => {
                      <Grid item md={4}>
                         <Typography variant='body1'>Car Info</Typography>
                         <Typography variant='body2' color='gray'>
-                           Car Information is also importants to verify cars
+                           Car Information is also important to verify cars
                            validity.
                         </Typography>
                      </Grid>
@@ -348,6 +364,8 @@ const RiderSignUp = () => {
                                     'Password must be at least 6 characters long',
                               },
                            })}
+                           error={errors.password && true}
+                           helperText={errors.password && errors.password.message}
                         />
                         <InputField
                            label='Confirm Password'
@@ -360,6 +378,8 @@ const RiderSignUp = () => {
                                  message: 'Confirm password is required',
                               },
                            })}
+                           error={errors.confirmPassword && true}
+                           helperText={errors.confirmPassword ? errors.confirmPassword.message : ''}
                         />
                      </Grid>
                   </Grid>
@@ -405,7 +425,11 @@ const RiderSignUp = () => {
                   sx={{ marginLeft: 'auto', display: 'block' }}
                   type='submit'
                >
-                  Join
+                 {userLoading ? (
+                           <CircularProgress color='common' size='1.5rem' />
+                        ) : (
+                           'Join'
+                        )}
                </Button>
             </Form>
          </Container>
